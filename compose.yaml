@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: nextks
+      POSTGRES_USER: nextks
+      POSTGRES_PASSWORD: nextks
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./.keystone/postgres:/var/lib/postgresql/data
+    networks:
+      nextks:
+        aliases:
+          - nextks-db
+
+  admin:
+    build:
+      dockerfile: Dockerfile.admin
+      args:
+        DB_PROVIDER: "postgresql"
+    environment:
+      KS_PORT: "3000"
+      DATABASE_URL: "postgresql://nextks:nextks@db:5432/nextks"
+      NEXT_PUBLIC_GRAPHQL_PATH: "/api/graphql"
+      NEXT_PUBLIC_SERVER_URL: "http://localhost:3000"
+    ports:
+      - 3000:3000
+    networks:
+      nextks:
+      nginx-proxy:
+        aliases:
+          - nextks
+
+networks:
+  nextks:
+  nginx-proxy:

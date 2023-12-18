@@ -1,0 +1,28 @@
+FROM node:18-alpine as base
+
+ARG DB_PROVIDER="sqlite"
+ENV DB_PROVIDER=${DB_PROVIDER}
+
+WORKDIR /app
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --ignore-scripts
+
+FROM base as build
+
+COPY --from=base /app .
+COPY . .
+RUN npm run postinstall
+RUN npm run build:ks
+
+FROM base as release
+
+COPY --from=build /app .
+RUN rm -rf node_modules
+RUN npm ci --ignore-script --omit=dev
+
+CMD DB_PROVIDER=${DB_PROVIDER} \
+    npm run push && \
+    npm run start:ks
