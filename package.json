@@ -10,7 +10,8 @@
     "start:ks": "keystone start",
     "build:ks": "keystone build",
     "postinstall": "keystone postinstall --fix",
-    "push": "keystone prisma db push"
+    "push": "keystone prisma db push",
+    "clear": "rm -rf .keystone .next node_modules"
   },
   "dependencies": {
     "@keystone-6/auth": "^7.0.2",
