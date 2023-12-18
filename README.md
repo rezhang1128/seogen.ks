@@ -2,11 +2,12 @@
 
 ## Setup
 
-`yarn install`
+`npm install`
 
 ## Start dev
 
-`yarn dev`
+- Next: `npm run dev:nx`
+- Keystone: `npm run dev:ks`
 
 ## Notes
 
