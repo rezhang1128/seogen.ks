@@ -14,6 +14,10 @@ export default withAuth(
     server: {
       port: KS_PORT,
     },
+    ui: {
+      // fix: AdminMeta access denied when login to admin ui
+      isAccessAllowed: (context) => !!context.session,
+    },
     db: {
       provider: DB_PROVIDER,
       url: DATABASE_URL,

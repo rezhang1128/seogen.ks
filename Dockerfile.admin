@@ -5,6 +5,8 @@ ENV DB_PROVIDER=${DB_PROVIDER}
 
 WORKDIR /app
 
+FROM base as deps
+
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
@@ -12,17 +14,28 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 FROM base as build
 
-COPY --from=base /app .
+ARG DB_PROVIDER="sqlite"
+ENV DB_PROVIDER=${DB_PROVIDER}
+
+WORKDIR /app
+
+COPY --from=deps /app .
 COPY . .
-RUN npm run postinstall
-RUN npm run build:ks
 
-FROM base as release
+RUN npm run postinstall && \
+    npm run build:ks 
+#     rm -rf node_modules
 
-COPY --from=build /app .
-RUN rm -rf node_modules
-RUN npm ci --ignore-script --omit=dev
+# FROM node:18-alpine as runner
 
-CMD DB_PROVIDER=${DB_PROVIDER} \
-    npm run push && \
-    npm run start:ks
+# ARG DB_PROVIDER="sqlite"
+# ENV DB_PROVIDER=${DB_PROVIDER}
+
+# WORKDIR /app
+
+# COPY --from=build /app ./
+# RUN npm ci --ignore-scripts --omit=dev
+
+EXPOSE 3000
+
+CMD DB_PROVIDER=${DB_PROVIDER} npm run start:ks
