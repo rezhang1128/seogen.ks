@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:nx": "next dev",
+    "dev:nx": "next dev --port 4000",
     "build:nx": "next build",
     "start:nx": "next start",
     "dev:ks": "keystone dev",
