@@ -29,3 +29,13 @@ const userCount = await keystoneContext.query.User.count();
 Use hook `useGraphql(query: string, variables: any = {})` for data fetching.
 
 Check API explorer for query construction: `http://localhost:3000/api/graphql`
+
+## Deploy
+
+### Deploy Keystone Admin UI
+
+Deploy to <https://fly.io>, or use `docker compose` with nginx on your own server.
+
+### Deploy Next.js
+
+<https://vercel.app>
