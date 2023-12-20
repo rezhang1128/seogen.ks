@@ -4,7 +4,7 @@ import { GRAPHQL_ENDPOINT } from "./variables";
 async function graphql(
   query: string,
   variables: any = {},
-  url: string = GRAPHQL_ENDPOINT
+  url: URL = GRAPHQL_ENDPOINT
 ): Promise<[any, any]> {
   const response = await fetch(url, {
     method: "POST",
