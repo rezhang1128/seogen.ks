@@ -1,17 +1,18 @@
 import useSWR from "swr";
 import { GRAPHQL_ENDPOINT } from "./variables";
+import { Obj } from "./types/helpers";
 
 async function graphql(
   query: string,
-  variables: any = {},
+  variables: Obj = {},
   url: URL = GRAPHQL_ENDPOINT
-): Promise<[any, any]> {
+): Promise<Obj> {
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: query.replace(/(\r\n|\n|\r|\t)/gm, " ").replace(/  +/g, " "),
-      variables: variables,
+      variables,
     }),
   });
 
@@ -20,10 +21,49 @@ async function graphql(
   return res;
 }
 
-function useGraphql(query: string, variables: any = {}) {
+export function useGraphql(query: string, variables: any = {}) {
   return useSWR([query, variables], () => graphql(query, variables));
 }
 
 export function useUsers() {
-  return useGraphql(`query { users { id name } }`);
+  return useGraphql(/* GraphQL */ `
+    query {
+      users {
+        id
+        name
+      }
+    }
+  `);
+}
+
+export async function authenticateUserWithPassword(variables: {
+  email: string;
+  password: string;
+}) {
+  const response = await graphql(
+    /* GraphQL */ `
+      mutation Mutation($email: String!, $password: String!) {
+        authenticateUserWithPassword(email: $email, password: $password) {
+          ... on UserAuthenticationWithPasswordSuccess {
+            item {
+              id
+              email
+            }
+            sessionToken
+          }
+          ... on UserAuthenticationWithPasswordFailure {
+            message
+          }
+        }
+      }
+    `,
+    variables
+  );
+
+  const result = response.data?.authenticateUserWithPassword;
+  return {
+    item: result.item,
+    sessionToken: result.sessionToken,
+    message: result.message,
+  };
 }
