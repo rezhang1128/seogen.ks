@@ -1,6 +1,11 @@
 import useSWR from "swr";
 import { GRAPHQL_ENDPOINT } from "./variables";
 import { Obj } from "./types/helpers";
+import { keystoneContext } from "@/keystone/context";
+import {
+  UserAuthenticationWithPasswordFailure,
+  UserAuthenticationWithPasswordResult,
+} from "./types/auth";
 
 async function graphql(
   query: string,
@@ -46,8 +51,9 @@ export async function authenticateUserWithPassword(variables: {
         authenticateUserWithPassword(email: $email, password: $password) {
           ... on UserAuthenticationWithPasswordSuccess {
             item {
-              id
+              name
               email
+              role
             }
             sessionToken
           }
@@ -59,11 +65,6 @@ export async function authenticateUserWithPassword(variables: {
     `,
     variables
   );
-
-  const result = response.data?.authenticateUserWithPassword;
-  return {
-    item: result.item,
-    sessionToken: result.sessionToken,
-    message: result.message,
-  };
+  return response.data
+    ?.authenticateUserWithPassword as UserAuthenticationWithPasswordResult;
 }
