@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "only-allow npm",
+    "postinstall": "keystone postinstall --fix",
     "db:up": "docker compose up db -d",
     "db:down": "docker compose down db",
     "dev:nx": "npm run db:up && next dev --port 4000",
@@ -12,7 +14,6 @@
     "start:ks": "keystone start",
     "build:ks": "keystone build",
     "dev": "npm-run-all -l -p dev:*",
-    "postinstall": "keystone postinstall --fix",
     "push": "keystone prisma db push",
     "commitlint": "commitlint --edit"
   },
@@ -38,6 +39,7 @@
     "eslint-config-next": "14.0.4",
     "husky": "^8.0.3",
     "npm-run-all": "^4.1.5",
+    "only-allow": "^1.2.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
