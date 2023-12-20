@@ -1,11 +1,7 @@
 import useSWR from "swr";
 import { GRAPHQL_ENDPOINT } from "./variables";
 import { Obj } from "./types/helpers";
-import { keystoneContext } from "@/keystone/context";
-import {
-  UserAuthenticationWithPasswordFailure,
-  UserAuthenticationWithPasswordResult,
-} from "./types/auth";
+import { UserAuthenticationWithPasswordResult } from "./types/auth";
 
 async function graphql(
   query: string,
