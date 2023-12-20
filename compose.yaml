@@ -2,7 +2,7 @@ services:
   db:
     image: postgres
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       POSTGRES_DB: seogen
       POSTGRES_USER: seogen
@@ -22,7 +22,7 @@ services:
         DB_PROVIDER: "postgresql"
     environment:
       KS_PORT: "3000"
-      DATABASE_URL: "postgresql://seogen:seogen@db:5432/seogen"
+      DATABASE_URL: "postgresql://seogen:seogen@db:5433/seogen"
       NEXT_PUBLIC_GRAPHQL_PATH: "/api/graphql"
       NEXT_PUBLIC_SERVER_URL: "http://localhost:3000"
     ports:
