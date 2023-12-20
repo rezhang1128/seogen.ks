@@ -11,6 +11,10 @@
             "url": "http://localhost:4000",
             "runtimeArgs": [
                 "--disable-web-security",
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/",
+                "!/node_modules/**"
             ]
         }
     ]
