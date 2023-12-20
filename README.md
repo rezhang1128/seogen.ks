@@ -1,5 +1,11 @@
 # Next.js & Keystone.js
 
+## Git
+
+### [Commit lint](https://github.com/conventional-changelog/commitlint/?tab=readme-ov-file#what-is-commitlint)
+
+Commit message should follow the format: <https://www.conventionalcommits.org/en/v1.0.0/>
+
 ## Setup
 
 `npm install`
