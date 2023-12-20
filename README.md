@@ -12,6 +12,8 @@ Commit message should follow the format: <https://www.conventionalcommits.org/en
 
 ## Start dev
 
+- DB
+  - postgresql: `docker compose up db -d`
 - Next: `npm run dev:nx`
 - Keystone: `npm run dev:ks`
 
